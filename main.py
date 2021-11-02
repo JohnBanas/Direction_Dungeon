@@ -1,6 +1,7 @@
 # This is a sample Python script.
 from art import *
 from os import system
+import random
 
 
 # function to clear the terminal
@@ -26,7 +27,7 @@ def menu():
         clear()
         pre_game_start()
     else:
-        print('You have selected leaderboards.')
+        print('Look for a future update to create a leaderboard.')
         # leaderboard()
 
 
@@ -44,6 +45,7 @@ new_game = True
 def new_game_start(person, person_choice):
     clear()
     if person_choice == '5':
+        print("Thank you for playing")
         global new_game
         new_game = True
         menu()
@@ -145,16 +147,18 @@ def new_game_start(person, person_choice):
         aprint("sword2")
         input(f'''In the darkness you hear a voice... wait... you have heard this before... '
         {MyColors.YELLOW_GOLD}(Press <Enter>){MyColors.END}''')
+    else:
+        print("Invalid option, please start again.")
     pre_game_start(person)
 
 
 return_neutral_options = [
-    print(f'''You suddenly realize you are walking down a hallway. You hear an eerie shriek in the distance. 
+    f'''You suddenly realize you are walking down a hallway. You hear an eerie shriek in the distance. 
     Whipping around you see nothing, yet when you turn again you see a door in front of you. 
     You open the door expecting to go into a room and you come out into a hallway that looks vaguely familiar. 
     As the door closes, you turn to see an all too familiar door with... no...
     {MyColors.YELLOW_GOLD}strange runes{MyColors.END} humming. The whisperers are always present around these doors, but
-    their words are unintelligible. Where is this place?'''), print(f'''What lies beyond these endless mazes of hallways, 
+    their words are unintelligible. Where is this place?''', f'''What lies beyond these endless mazes of hallways, 
     {MyColors.YELLOW_GOLD}"Is it all within my mind? Am I going mad?"{MyColors.END} You say aloud, and inside you wonder 
     who am I speaking to you and narrating your own thoughts to you? All this and more will be revealed. You realize you 
     have come to an intersection with another hallway. 
@@ -163,31 +167,69 @@ return_neutral_options = [
     summer day. How long since you have seen light? Is that a faint light down the hall? {MyColors.GREEN}To the left
     {MyColors.END} you glance, the whisperers loudly begin to wail, and the current cacophony of their anguish would 
     pale in comparison to the sounds they would release, if you were to go that way. 
-    that way.'''), print(f'''You come to and you are seated on the ground, but for how long? You look and there is a 
+    that way.''', f'''You come to and you are seated on the ground, but for how long? You look and there is a 
     window! The sky, fresh air, how you have longed for it! As you push gently, it doesn't budge. You run hard, and with 
     all of your strength and weight push into the window, but it flies open effortlessly and you tumble in and land 
     hard on your face. As you brush yourself off and gather your surroundings, you don't need to look to hear the 
-    whisperers and the gentle hum of the door with runes. You are back where you started, and doomed to be.''')]
+    whisperers and the gentle hum of the door with runes. You are back where you started, and doomed to be.''']
 
 
 return_positive_options = [
-    print(f'''You see the bright silver outline of a doorway. These runes are similar to the door
+    f'''You see the bright silver outline of a doorway. These runes are similar to the door
     you awoke behind, but there is no fear or malice in the whispers you hear. {MyColors.BRIGHT_CYAN}"We knew you were 
     the best of us. We knew you would persevere to find the way out and break the Beast's illusions. Oath fulfilled we 
     can rest. The Beast still lives tied to the flesh of Shah'Me'hett, will you be at peace with that?"{MyColors.END} 
-    There is no further reply and you know that you can freely leave this prison, but will it be for good?''')]
+    There is no further reply and you know that you can freely leave this prison, but will it be for good?''']
 
 
 return_negative_options = [
-    print(f'''You have always had feeling that something was watching, waiting, there, but just out of your eye sight, 
+   f'''You have always had feeling that something was watching, waiting, there, but just out of your eye sight, 
     but these {MyColors.FOREGROUND_RED}glowing red eyes{MyColors.END} are very near, and as the creature comes into the 
     light you have the only the briefest moment to realize you will not be getting away this time. You scream as it 
-    begins to rip you apart, not because of the pain, but because you suddenly remember this from before.''')]
+    begins to rip you apart, not because of the pain, but because you suddenly remember this from before.''']
 
 
-def game_function(player, option):
+def option_function(player):
+    global new_game
+    ran_num1 = random.randrange(3)
+    ran_num2 = random.randrange(3)
+    if ran_num1 == 1:
+        aprint("sword2")
+        print(return_neutral_options[ran_num2])
+        aprint("sword2")
+        game_function(player)
+    if ran_num1 == 2:
+        aprint("sword2")
+        print(return_positive_options[0])
+        aprint("sword2")
+        print("Congratulations! You have conquered your fear and the dungeon. Haven't you?")
+        new_game = True
+        menu()
+    if ran_num1 == 3:
+        aprint("sword2")
+        print(return_negative_options[0])
+        aprint("sword2")
+        print("So sorry. You have suffered an unimaginable fate. The game is over... isn't it?")
+        new_game = True
+        menu()
 
 
+def game_function(player):
+    choice = input('''Which way will you go?
+        1. Forward
+        2. Back the way I came
+        3. Right
+        4. Left
+        5. End Game
+
+        ''')
+    if choice == '5':
+        print("Thank you for playing")
+        global new_game
+        new_game = True
+        menu()
+    elif choice == '1':
+        option_function(player)
 
 
 def pre_game_start(player=False):
@@ -218,19 +260,19 @@ def pre_game_start(player=False):
     {MyColors.YELLOW_GOLD}{player}{MyColors.END}, till we rest...''')
     aprint("sword2")
     print(" ")
-    choice = input('''Which way will you go?
-    1. Forward
-    2. Back the way I came
-    3. Right
-    4. Left
-    5. End Game
-    
-    ''')
     if new_game:
+        choice = input('''Which way will you go?
+            1. Forward
+            2. Back the way I came
+            3. Right
+            4. Left
+            5. End Game
+
+            ''')
         new_game = False
         new_game_start(player, choice)
     else:
-        game_function(player, choice)
+        game_function(player)
 
 
 menu()
